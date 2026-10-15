@@ -41,9 +41,13 @@ export function AuthProvider({ children }) {
         const user = response.user;
         const token = response.token;
 
-        await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(user));
+        // Guardar de manera segura con control de errores
+        await AsyncStorage.multiSet([
+          [SESSION_KEY, JSON.stringify(user)],
+          [TOKEN_KEY, token || '']
+        ]);
+
         if (token) {
-          await AsyncStorage.setItem(TOKEN_KEY, token);
           setAuthToken(token);
         }
 
@@ -67,9 +71,12 @@ export function AuthProvider({ children }) {
         const user = response.user;
         const token = response.token;
 
-        await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(user));
+        await AsyncStorage.multiSet([
+          [SESSION_KEY, JSON.stringify(user)],
+          [TOKEN_KEY, token || '']
+        ]);
+
         if (token) {
-          await AsyncStorage.setItem(TOKEN_KEY, token);
           setAuthToken(token);
         }
 
@@ -84,7 +91,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Iniciar sesión con Google (recibe el perfil de Google ya autenticado por Firebase)
+  // Iniciar sesión con Google
   const loginWithGoogle = async ({ nombre, correo, avatar, googleId }) => {
     try {
       const response = await apiLoginWithGoogle({ nombre, correo, avatar, googleId });
@@ -93,9 +100,12 @@ export function AuthProvider({ children }) {
         const user = response.user;
         const token = response.token;
 
-        await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(user));
+        await AsyncStorage.multiSet([
+          [SESSION_KEY, JSON.stringify(user)],
+          [TOKEN_KEY, token || '']
+        ]);
+
         if (token) {
-          await AsyncStorage.setItem(TOKEN_KEY, token);
           setAuthToken(token);
         }
 
@@ -116,8 +126,7 @@ export function AuthProvider({ children }) {
       if (currentUser?.id) {
         await apiLogout(currentUser.id).catch(() => {});
       }
-      await AsyncStorage.removeItem(SESSION_KEY);
-      await AsyncStorage.removeItem(TOKEN_KEY);
+      await AsyncStorage.multiRemove([SESSION_KEY, TOKEN_KEY]);
       setCurrentUser(null);
       setAuthToken(null);
       return { success: true };
