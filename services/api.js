@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-const RENDER_URL = 'https://chatapp-4w36.onrender.com';
+const RENDER_URL = '[https://chatapp-4w36.onrender.com/api](https://chatapp-4w36.onrender.com/api)';
 
 // Lista de URLs a intentar (priorizando la nube para funcionar con datos móviles o cualquier red)
 function getBaseUrls() {
