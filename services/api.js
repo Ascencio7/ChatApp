@@ -1,57 +1,18 @@
-import { Platform, NativeModules } from 'react-native';
-import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-const PORT = '5000';
-const FALLBACK_IP = '192.168.1.40';
+const RENDER_URL = 'https://chatapp-4w36.onrender.com';
 
-// Obtener la IP dinámica de la computadora donde corre Expo Metro
-function getHostIp() {
-  try {
-    // En Expo Go, hostUri contiene "192.168.x.x:8081"
-    const hostUri =
-      Constants.expoConfig?.hostUri ||
-      Constants.manifest2?.extra?.expoGo?.debuggerHost ||
-      Constants.manifest?.debuggerHost;
-
-    if (hostUri) {
-      const ip = hostUri.split(':')[0];
-      if (ip && ip !== 'localhost' && ip !== '127.0.0.1') {
-        return ip;
-      }
-    }
-
-    // React Native SourceCode
-    const scriptURL = NativeModules?.SourceCode?.scriptURL;
-    if (scriptURL) {
-      const address = scriptURL.split('://')[1]?.split('/')[0]?.split(':')[0];
-      if (address && address !== 'localhost' && address !== '127.0.0.1') {
-        return address;
-      }
-    }
-  } catch (e) {
-    console.log('No se pudo detectar IP automática:', e?.message);
-  }
-
-  return FALLBACK_IP;
-}
-
-const SERVER_IP = getHostIp();
-
-// Lista de URLs a intentar según el entorno
+// Lista de URLs a intentar (priorizando la nube para funcionar con datos móviles o cualquier red)
 function getBaseUrls() {
-  if (Platform.OS === 'web') {
-    return [`http://localhost:${PORT}/api`];
-  }
-
-  // En dispositivo móvil (físico o emulador), priorizamos la IP de la computadora en la red Wi-Fi
   return [
-    `http://${SERVER_IP}:${PORT}/api`,
-    `http://${FALLBACK_IP}:${PORT}/api`,
-    `http://10.0.2.2:${PORT}/api`, // Emulador Android
+    RENDER_URL,
+    // Opcional: IP local o emulador como respaldo para desarrollo sin internet
+    // 'http://192.168.1.40:5000/api',
+    // 'http://10.0.2.2:5000/api',
   ];
 }
 
-export const API_BASE_URL = `http://${SERVER_IP}:${PORT}/api`;
+export const API_BASE_URL = RENDER_URL;
 
 // Helper para peticiones con timeout y manejo claro de errores
 async function request(endpoint, options = {}) {
@@ -68,7 +29,7 @@ async function request(endpoint, options = {}) {
     let data;
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos de timeout para la nube
 
       response = await fetch(`${baseUrl}${endpoint}`, {
         ...options,
@@ -92,9 +53,9 @@ async function request(endpoint, options = {}) {
     return data;
   }
 
-  // Mensaje amigable y descriptivo si el servidor no responde
+  // Mensaje amigable si no hay conexión con Render
   const friendlyMsg =
-    'No se pudo conectar al servidor backend. Verifica que esté iniciado con "npm run server" en tu computadora y que tu teléfono esté en la misma red Wi-Fi.';
+    'No se pudo conectar al servidor en la nube. Verifica tu conexión a internet.';
   throw new Error(lastError?.message?.includes('Network') || lastError?.message?.includes('connect')
     ? friendlyMsg
     : lastError?.message || friendlyMsg);
