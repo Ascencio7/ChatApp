@@ -55,6 +55,7 @@ function AppNavigator() {
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
+          contentStyle: { backgroundColor: colors.background }, // 👈 ESTO ELIMINA EL DESTELLO BLANCO
         }}
       >
         <Stack.Screen name="Login" component={LoginScreen} />
@@ -78,4 +79,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
