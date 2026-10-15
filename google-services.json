@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "859854572760",
+    "project_id": "chatavasa",
+    "storage_bucket": "chatavasa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859854572760:android:01ae55dfaf8e7858f41bad",
+        "android_client_info": {
+          "package_name": "avasaia.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859854572760-ibjqua7vi1hkfl627dd5ps3smp2rj41t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ_k9bVJ3--kFn1DkaagjKAAN3l_Qj6TM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859854572760-ibjqua7vi1hkfl627dd5ps3smp2rj41t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
