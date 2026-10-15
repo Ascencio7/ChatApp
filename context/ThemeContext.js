@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, ActivityIndicator } from 'react-native';
 
 export const lightColors = {
   mode: 'light',
@@ -26,7 +27,7 @@ export const lightColors = {
 
 export const darkColors = {
   mode: 'dark',
-  background: '#131314', // Fondo icónico de Gemini Dark
+  background: '#131314',
   card: '#1e1f20',
   surface: '#282a2c',
   surfaceElevated: '#313538',
@@ -34,7 +35,7 @@ export const darkColors = {
   textSecondary: '#8e918f',
   textMuted: '#5e6163',
   border: '#313538',
-  accent: '#a8c7fa', // Azul característico de Google Gemini
+  accent: '#a8c7fa',
   accentGradient: ['#4285f4', '#9b72cb'],
   accentLight: '#1f2e46',
   geminiSparkle: '#a8c7fa',
@@ -91,6 +92,15 @@ export function ThemeProvider({ children }) {
 
   const colors = isDarkMode ? darkColors : lightColors;
 
+  // Si el tema aún se está cargando, evitamos renderizar la interfaz con colores incorrectos
+  if (!isLoaded) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#131314', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#a8c7fa" />
+      </View>
+    );
+  }
+
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme, setTheme, colors, isLoaded }}>
       {children}
@@ -105,4 +115,3 @@ export function useTheme() {
   }
   return context;
 }
-
