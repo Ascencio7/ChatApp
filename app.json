@@ -6,7 +6,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./image/logo.png",
     "splash": {
+      "image": "./image/logo.png",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
@@ -18,12 +21,18 @@
       "googleServicesFile": "./google-services.json",
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
+        "foregroundImage": "./image/logo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "plugins": [
       "expo-status-bar",
       "expo-web-browser"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5f5ee59d-ac05-491c-b1de-00c2e9e68b6e"
+      }
+    }
   }
 }
