@@ -161,35 +161,6 @@ export default function LoginScreen({ navigation }) {
             Bienvenido de vuelta
           </Text>
 
-          {/* ── Botón Google ── */}
-          <TouchableOpacity
-            style={[
-              styles.googleBtn,
-              {
-                backgroundColor: colors.card,
-                borderColor: colors.border,
-                opacity: isGoogleLoading ? 0.7 : 1,
-              },
-            ]}
-            onPress={handleGoogleLogin}
-            disabled={isGoogleLoading || !request}
-            activeOpacity={0.85}
-          >
-            {isGoogleLoading ? (
-              <ActivityIndicator size="small" color={accent} />
-            ) : (
-              <>
-                <Image
-                  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png' }}
-                  style={styles.googleIcon}
-                />
-                <Text style={[styles.googleBtnText, { color: colors.textPrimary }]}>
-                  Continuar con Google
-                </Text>
-              </>
-            )}
-          </TouchableOpacity>
-
           {/* Divisor */}
           <View style={styles.divider}>
             <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
